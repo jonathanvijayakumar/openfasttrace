@@ -239,4 +239,12 @@ class TestTracing
                 () -> assertItemHasNoCoveredArtifactTypes(parent), //
                 () -> assertItemHasNoCoveredArtifactTypes(parent));
     }
+    
+    // [utest->dsn~strict-and-relaxed-coverage-mode~1]
+    @Test
+    void testRelaxedTracingMode() {
+//    	final Trace trace = traceItems(
+//    			this.paret
+//    			)
+    }
 }

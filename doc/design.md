@@ -6,7 +6,7 @@
 
 This documents structure is derived from the "[arc42][bib.arc42]" architectural template by Dr. Gernot Starke, Dr. Peter Hruschka.
 
-If you build your own modifications based on this document, please keep the attrbiutions.
+If you build your own modifications based on this document, please keep the attributions.
 
 ## Terminology
 The terminology from the [system requirement specification][bib.srs] applies.
@@ -106,6 +106,8 @@ The linker is responsible for turning the imported [specification items](#specif
 
 ## Tracer
 The tracer consumes the list of [linked specification items](#linked-specification-item) and evaluates the link status for each link.
+
+Different types of tracers implement different tracing strategies.
 
 ## Reporter
 The reporter consumes the link status list and the specification item list and generates a report in the chosen output format.
@@ -269,6 +271,20 @@ The [tracer](#tracer) detects cycles in links between [Linked Specification Item
 Covers:
 
 * `req~tracing.link-cycle~1`
+
+Needs: impl, utest
+
+### Strict and Relaxed Coverage Mode
+`dsn~strict-and-relaxed-coverage-mode~1`
+
+OFT features two different Tracers:
+
+1. Strict Tracer: counts only specification items in status `Approved` towards coverage
+2. Relaxed Tracer: counts all specification items in any other status than `Rejected` towards coverage
+
+Covers:
+
+* `req~strict-and-relaxed-coverage-mode~1`
 
 Needs: impl, utest
 
