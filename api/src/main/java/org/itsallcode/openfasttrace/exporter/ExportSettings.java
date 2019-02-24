@@ -1,4 +1,4 @@
-package org.itsallcode.openfasttrace;
+package org.itsallcode.openfasttrace.exporter;
 
 /*-
  * #%L

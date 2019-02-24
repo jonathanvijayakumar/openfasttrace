@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.itsallcode.openfasttrace.core.*;
+import org.itsallcode.openfasttrace.exporter.ExportSettings;
 import org.itsallcode.openfasttrace.importer.ImportSettings;
 
 /**
@@ -48,16 +49,28 @@ public interface Oft
      * 
      * @return list of imported specification items.
      */
-    public List<SpecificationItem> importItems(ImportSettings settings);
+    public List<SpecificationItem> importItems(final ImportSettings settings);
+
+    /**
+     * Link specification items with default linker settings
+     * 
+     * @param items
+     *            specification items to be interlinked
+     * @return list of linked specification items
+     */
+    public List<LinkedSpecificationItem> link(final List<SpecificationItem> items);
 
     /**
      * Link specification items
      * 
      * @param items
      *            specification items to be interlinked
+     * @param settings
+     *            link settings
      * @return list of linked specification items
      */
-    public List<LinkedSpecificationItem> link(List<SpecificationItem> items);
+    public List<LinkedSpecificationItem> link(final List<SpecificationItem> items,
+            final LinkSettings settings);
 
     /**
      * Trace a list of linked specification items
@@ -66,7 +79,7 @@ public interface Oft
      *            items to be traced
      * @return trace result
      */
-    public Trace trace(List<LinkedSpecificationItem> linkedItems);
+    public Trace trace(final List<LinkedSpecificationItem> linkedItems);
 
     /**
      * Export items with default settings
@@ -76,7 +89,7 @@ public interface Oft
      * @param path
      *            output path for export
      */
-    public void exportToPath(List<SpecificationItem> items, final Path path);
+    public void exportToPath(final List<SpecificationItem> items, final Path path);
 
     /**
      * Export items
@@ -97,7 +110,7 @@ public interface Oft
      * @param trace
      *            trace from which the report is generated
      */
-    public void reportToStdOut(Trace trace);
+    public void reportToStdOut(final Trace trace);
 
     /**
      * Generate a report
@@ -108,7 +121,7 @@ public interface Oft
      * @param settings
      *            report settings
      */
-    public void reportToStdOut(Trace trace, ReportSettings settings);
+    public void reportToStdOut(final Trace trace, ReportSettings settings);
 
     /**
      * Generate a report
@@ -120,7 +133,7 @@ public interface Oft
      *            path the report should be written to (or file in case this is
      *            a single-file report)
      */
-    public void reportToPath(Trace trace, Path outputPath);
+    public void reportToPath(final Trace trace, final Path outputPath);
 
     /**
      * Generate a report
@@ -135,7 +148,8 @@ public interface Oft
      * @param settings
      *            report settings
      */
-    public void reportToPath(Trace trace, Path outputPath, ReportSettings settings);
+    public void reportToPath(final Trace trace, final Path outputPath,
+            final ReportSettings settings);
 
     /**
      * Create a new instance of a object implementing the {@link Oft} interface

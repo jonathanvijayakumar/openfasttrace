@@ -25,9 +25,9 @@ package org.itsallcode.openfasttrace.cli.commands;
 
 import java.util.List;
 
-import org.itsallcode.openfasttrace.ExportSettings;
 import org.itsallcode.openfasttrace.cli.CliArguments;
 import org.itsallcode.openfasttrace.core.SpecificationItem;
+import org.itsallcode.openfasttrace.exporter.ExportSettings;
 
 /**
  * Handler for specification item conversion CLI command.

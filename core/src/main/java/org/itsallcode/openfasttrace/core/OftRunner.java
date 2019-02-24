@@ -25,10 +25,10 @@ package org.itsallcode.openfasttrace.core;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.itsallcode.openfasttrace.ExportSettings;
 import org.itsallcode.openfasttrace.Oft;
 import org.itsallcode.openfasttrace.ReportSettings;
 import org.itsallcode.openfasttrace.core.serviceloader.InitializingServiceLoader;
+import org.itsallcode.openfasttrace.exporter.ExportSettings;
 import org.itsallcode.openfasttrace.exporter.ExporterService;
 import org.itsallcode.openfasttrace.importer.*;
 import org.itsallcode.openfasttrace.report.ReportService;
@@ -68,9 +68,16 @@ public class OftRunner implements Oft
     }
 
     @Override
+    public List<LinkedSpecificationItem> link(List<SpecificationItem> items, LinkSettings settings)
+    {
+        return new Linker(items, settings).link();
+    }
+
+    @Override
     public Trace trace(final List<LinkedSpecificationItem> linkedItems)
     {
-        return new Tracer().trace(linkedItems);
+        final Tracer tracer = new Tracer();
+        return tracer.trace(linkedItems);
     }
 
     @Override

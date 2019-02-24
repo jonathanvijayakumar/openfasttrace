@@ -25,8 +25,18 @@ package org.itsallcode.openfasttrace.core;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The tracer generate a requirement trace from a list of specification items
+ */
 public class Tracer
 {
+    /**
+     * Calculate the requirement trace from the given specification items
+     * 
+     * @param items
+     *            items to be traced
+     * @return requirement trace
+     */
     public Trace trace(final List<LinkedSpecificationItem> items)
     {
         final Trace.Builder builder = Trace.builder();

@@ -1,5 +1,8 @@
 package org.itsallcode.openfasttrace.core;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 /*-
  * #%L
  * OpenFastTrace
@@ -81,11 +84,21 @@ class TestTracing
 
     private Trace traceItems(final SpecificationItem.Builder... builders)
     {
-        final List<SpecificationItem> items = buildTestItems(builders);
         final Oft oft = Oft.create();
-        final List<LinkedSpecificationItem> linkedItems = oft.link(items);
-        final Trace trace = oft.trace(linkedItems);
-        return trace;
+        final List<LinkedSpecificationItem> linkedItems = linkItemsFromBuilders(oft, builders);
+        return oft.trace(linkedItems);
+    }
+
+    private List<LinkedSpecificationItem> linkItemsFromBuilders(final Oft oft,
+            final SpecificationItem.Builder... builders)
+    {
+        return oft.link(buildTestItems(builders));
+    }
+
+    private List<LinkedSpecificationItem> linkItemsFromBuildersWithSettings(Oft oft,
+            Builder[] builders, LinkSettings settings)
+    {
+        return oft.link(buildTestItems(builders), settings);
     }
 
     private List<SpecificationItem> buildTestItems(final SpecificationItem.Builder... builders)
@@ -239,12 +252,44 @@ class TestTracing
                 () -> assertItemHasNoCoveredArtifactTypes(parent), //
                 () -> assertItemHasNoCoveredArtifactTypes(parent));
     }
-    
+
     // [utest->dsn~strict-and-relaxed-coverage-mode~1]
     @Test
-    void testRelaxedTracingMode() {
-//    	final Trace trace = traceItems(
-//    			this.paret
-//    			)
+    void testStrictTracingMode()
+    {
+        final Trace trace = traceItems( //
+                this.parentBuilder.addNeedsArtifactType(CHILD_A_ARTIFACT_TYPE));
+        assertThat(trace.hasNoDefects(), equalTo(false));
+    }
+
+    // [utest->dsn~strict-and-relaxed-coverage-mode~1]
+    @Test
+    void testStrictTracingModeMustFailWithProposedAsCoverage()
+    {
+        final Trace trace = traceItems( //
+                this.parentBuilder.addNeedsArtifactType(CHILD_A_ARTIFACT_TYPE), //
+                this.childABuilder.status(ItemStatus.PROPOSED));
+        assertThat(trace.hasNoDefects(), equalTo(false));
+    }
+
+    // [utest->dsn~strict-and-relaxed-coverage-mode~1]
+    @Test
+    void testRelaxedTracingMode()
+    {
+        final Trace trace = traceItemsRelaxed(ItemStatus.PROPOSED, //
+                this.parentBuilder.addNeedsArtifactType(CHILD_A_ARTIFACT_TYPE), //
+                this.childABuilder.status(ItemStatus.PROPOSED));
+        assertThat(trace.hasNoDefects(), equalTo(true));
+    }
+
+    private Trace traceItemsRelaxed(final ItemStatus minStatus,
+            final SpecificationItem.Builder... builders)
+    {
+        final Oft oft = Oft.create();
+        final LinkSettings linkSettings = LinkSettings.builder().minCoveringItemStatus(minStatus)
+                .build();
+        final List<LinkedSpecificationItem> linkedItems = linkItemsFromBuildersWithSettings(oft,
+                builders, linkSettings);
+        return oft.trace(linkedItems);
     }
 }

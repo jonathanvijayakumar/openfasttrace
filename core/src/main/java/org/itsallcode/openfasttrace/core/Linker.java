@@ -33,6 +33,7 @@ public class Linker
     private final List<LinkedSpecificationItem> linkedItems;
     private final LinkedItemIndex index;
     private final Map<SpecificationItemId, LinkedSpecificationItem> staleIndex;
+    private final LinkSettings settings;
 
     /**
      * Create a {@link Linker} for specification items.
@@ -42,6 +43,20 @@ public class Linker
      */
     public Linker(final List<SpecificationItem> items)
     {
+        this(items, LinkSettings.createDefault());
+    }
+
+    /**
+     * Create a {@link Linker} for specification items.
+     *
+     * @param items
+     *            the specification items to be linked.
+     * @param settings
+     *            link settings
+     */
+    public Linker(List<SpecificationItem> items, LinkSettings settings)
+    {
+        this.settings = settings;
         this.linkedItems = wrapItems(items);
         this.index = LinkedItemIndex.createFromWrappedItems(this.linkedItems);
         this.staleIndex = new HashMap<>();
@@ -74,7 +89,10 @@ public class Linker
     {
         for (final SpecificationItemId id : item.getCoveredIds())
         {
-            linkItemToItemWithId(item, id);
+            if (item.getStatus().isEquallyOrMoreMature(settings.getMinCoveringItemStatus()))
+            {
+                linkItemToItemWithId(item, id);
+            }
         }
     }
 

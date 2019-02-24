@@ -26,6 +26,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.itsallcode.openfasttrace.core.Newline;
+import org.itsallcode.openfasttrace.exporter.ExportSettings;
 import org.itsallcode.openfasttrace.exporter.ExporterConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
